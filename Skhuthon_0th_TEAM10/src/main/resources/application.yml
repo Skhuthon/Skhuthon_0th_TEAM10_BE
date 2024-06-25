@@ -19,8 +19,10 @@ server:
   forward-headers-strategy: framework
 jwt:
   secret: ${JWT_SECRET}
-  access-token-validity-in-milliseconds : ${ACCESS_TOKEN_VALIDITY_IN_MILLISECONDS}
+  access-token-validity-in-milliseconds: ${ACCESS_TOKEN_VALIDITY_IN_MILLISECONDS}
 
 GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI}
 client_id: ${GOOGLE_CLIENT_ID}
 client_secret: ${GOOGLE_CLIENT_SECRET}
+naver_client: ${NAVER-CLIENT}
+naver_key: ${NAVER-KEY}
