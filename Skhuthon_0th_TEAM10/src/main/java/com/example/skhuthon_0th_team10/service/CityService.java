@@ -28,6 +28,7 @@ public class CityService {
                     .cityId(city.getId())
                     .name(city.getName())
                     .cityImage(city.getCityImage())
+                    .discription(city.getDiscription())
                     .build();
 
             cityListResDtos.add(cityListResDto);

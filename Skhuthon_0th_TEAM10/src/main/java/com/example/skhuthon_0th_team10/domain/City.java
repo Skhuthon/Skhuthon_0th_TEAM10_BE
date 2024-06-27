@@ -16,6 +16,9 @@ public class City {
     @Column(name = "city_name")
     private String name;
 
+    @Column(name = "city_discription")
+    private  String discription;
+
     @Column(name = "city_info")
     private String info;
 

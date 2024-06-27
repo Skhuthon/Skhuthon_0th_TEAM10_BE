@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -28,11 +29,11 @@ public class AwsS3Service {
     public String upload(MultipartFile multipartFile, String dirname) throws IOException {
         File uploadFile = convert(multipartFile)
                 .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File 전환 실패"));
-        return upload(uploadFile, dirname);
+        return upload(uploadFile, dirname, multipartFile.getOriginalFilename());
     }
 
-    private String upload(File uploadFile, String dirname) {
-        String fileName = dirname + "/" + uploadFile.getName();
+    private String upload(File uploadFile, String dirname, String originalName) {
+        String fileName = dirname + "/" + UUID.randomUUID() + originalName;
         String uploadImageUrl = putS3(uploadFile, fileName);
 
         removeFile(uploadFile);

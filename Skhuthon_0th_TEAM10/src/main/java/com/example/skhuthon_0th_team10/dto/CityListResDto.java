@@ -9,4 +9,5 @@ public class CityListResDto {
     private Long cityId;
     private String name;
     private String cityImage;
+    private String discription;
 }
