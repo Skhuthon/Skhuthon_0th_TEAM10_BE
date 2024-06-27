@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
+import java.util.List;
 
 
 @RestController
@@ -27,16 +29,18 @@ public class ReviewController {
         return new ResponseEntity<>(reviewListResDto, HttpStatus.OK);
     }
 
-    @GetMapping("/{reviewId}")
-    public ResponseEntity<ReviewInfoResDto> reviewFindOne(@PathVariable("reviewId") Long reviewId) {
-        ReviewInfoResDto reviewInfoResDto = reviewService.reviewFindOne(reviewId);
-        return new ResponseEntity<>(reviewInfoResDto, HttpStatus.OK);
+    @GetMapping("/{cityId}")
+    public ResponseEntity<List<ReviewInfoResDto>> reviewFindOne(@PathVariable Long cityId) {
+        return new ResponseEntity<>(reviewService.findReviewList(cityId), HttpStatus.OK);
     }
 
     @ResponseBody
-    @PostMapping(value = "/new", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> reviewSave(@RequestPart("review") ReviewSaveReqDto reviewSaveReqDto, @RequestPart("image") MultipartFile image) throws IOException {
-        reviewService.reviewSave(reviewSaveReqDto, image);
+    @PostMapping(value = "/{cityId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> reviewSave(@RequestPart("review") ReviewSaveReqDto reviewSaveReqDto,
+                                             @RequestPart("image") MultipartFile image,
+                                             @PathVariable Long cityId,
+                                             Principal principal) throws IOException {
+        reviewService.reviewSave(reviewSaveReqDto, image, cityId, principal);
         return new ResponseEntity<>("후기 저장이 완료되었습니다.", HttpStatus.CREATED);
     }
 }

@@ -26,16 +26,17 @@ public class Review {
     @JoinColumn(name = "user_id")
     private User user;
 
-    /*@ManyToOne
+    @ManyToOne
     @JoinColumn(name = "city_id")
-    private City city;*/
+    private City city;
 
     @Builder
-    public Review(String placeName1, String placeInfo1, String placeImage1) {
+    public Review(String placeName1, String placeInfo1, String placeImage1, User user, City city) {
         this.placeName1 = placeName1;
         this.placeInfo1 = placeInfo1;
         this.placeImage1 = placeImage1;
-        //this.user= user;
+        this.user = user;
+        this.city = city;
     }
 
 }
