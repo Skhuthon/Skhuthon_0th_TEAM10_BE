@@ -7,8 +7,12 @@ import com.example.skhuthon_0th_team10.dto.ReviewSaveReqDto;
 import com.example.skhuthon_0th_team10.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 
 @RestController
@@ -29,9 +33,10 @@ public class ReviewController {
         return new ResponseEntity<>(reviewInfoResDto, HttpStatus.OK);
     }
 
-    @PostMapping()
-    public ResponseEntity<String> reviewSave(@RequestBody ReviewSaveReqDto reviewSaveReqDto) {
-        reviewService.reviewSave(reviewSaveReqDto);
+    @ResponseBody
+    @PostMapping(value = "/new", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> reviewSave(@RequestPart("review") ReviewSaveReqDto reviewSaveReqDto, @RequestPart("image") MultipartFile image) throws IOException {
+        reviewService.reviewSave(reviewSaveReqDto, image);
         return new ResponseEntity<>("후기 저장이 완료되었습니다.", HttpStatus.CREATED);
     }
 }

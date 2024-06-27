@@ -35,6 +35,7 @@ public class Review {
         this.placeName1 = placeName1;
         this.placeInfo1 = placeInfo1;
         this.placeImage1 = placeImage1;
+        //this.user= user;
     }
 
 }
