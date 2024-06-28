@@ -1,7 +1,10 @@
 package com.example.skhuthon_0th_team10.service;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -13,6 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,9 +33,65 @@ public class AwsS3Service {
     private String bucket;
 
     public String upload(MultipartFile multipartFile, String dirname) throws IOException {
-        File uploadFile = convert(multipartFile)
-                .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File 전환 실패"));
-        return upload(uploadFile, dirname, multipartFile.getOriginalFilename());
+//        File uploadFile = convert(multipartFile)
+//                .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File 전환 실패"));
+//        return upload(uploadFile, dirname, multipartFile.getOriginalFilename());
+        if (multipartFile == null) {
+            return "https://s3.ap-northeast-2.amazonaws.com/tasty-inventory-be-image/menu/image/4ae07266-577b-41bd-aa07-a8644c853914.jpeg2024-06-18T03%3A57%3A09.656107790";
+        }
+        String fileName = createFileName(multipartFile.getOriginalFilename());
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(multipartFile.getSize());
+        objectMetadata.setContentType(multipartFile.getContentType());
+        try(InputStream inputStream = multipartFile.getInputStream()) {
+            amazonS3.putObject(new PutObjectRequest(bucket+"/"+ dirname + "/image", fileName, inputStream, objectMetadata)
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
+            return amazonS3.getUrl(bucket+"/"+ dirname + "/image", fileName).toString();
+        } catch(IOException e) {
+            throw new IOException("파일 입출력 오류");
+        } catch (AmazonServiceException e) {
+            log.error("AmazonServiceException: Error Message: " + e.getMessage());
+            log.error("HTTP Status Code: " + e.getStatusCode());
+            log.error("AWS Error Code: " + e.getErrorCode());
+            log.error("Error Type: " + e.getErrorType());
+            log.error("Request ID: " + e.getRequestId());
+            throw new RuntimeException("Amazon 서비스 오류");
+        } catch (SdkClientException e) {
+            throw new RuntimeException("SDK 오류");
+        }
+    }
+
+    // 파일명 (중복 방지)
+    private String createFileName(String fileName) {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        return UUID.randomUUID().toString().concat(getFileExtension(fileName)) + localDateTime;
+    }
+
+    // 파일 유효성 검사
+    private String getFileExtension(String fileName) {
+        if (fileName.length() == 0) {
+            throw new IllegalArgumentException("파일 없음");
+        }
+        ArrayList<String> fileValidate = new ArrayList<>();
+        fileValidate.add(".jpg");
+        fileValidate.add(".JPG");
+        fileValidate.add(".jpeg");
+        fileValidate.add(".JPEG");
+        fileValidate.add(".png");
+        fileValidate.add(".PNG");
+        fileValidate.add(".webp");
+        fileValidate.add(".WebP");
+        fileValidate.add(".heif");
+        fileValidate.add(".HEIF");
+        fileValidate.add(".heic");
+        fileValidate.add(".HEIC");
+        fileValidate.add(".svg");
+        fileValidate.add(".SVG");
+        String idxFileName = fileName.substring(fileName.lastIndexOf("."));
+        if (!fileValidate.contains(idxFileName)) {
+            throw new IllegalArgumentException("잘못된 파일 이름");
+        }
+        return fileName.substring(fileName.lastIndexOf("."));
     }
 
     private String upload(File uploadFile, String dirname, String originalName) {
