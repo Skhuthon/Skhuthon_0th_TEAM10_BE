@@ -36,8 +36,8 @@ public class ReviewController {
                     content = @Content(schema = @Schema(example = "INVALID_HEADER or INVALID_TOKEN")))
     })
     @GetMapping()
-    public ResponseEntity<ReviewListResDto> reviewFindAll() {
-        ReviewListResDto reviewListResDto = reviewService.reviewFindAll();
+    public ResponseEntity<ReviewListResDto> reviewFindAll(Principal principal) {
+        ReviewListResDto reviewListResDto = reviewService.reviewFindAll(principal);
         return new ResponseEntity<>(reviewListResDto, HttpStatus.OK);
     }
 

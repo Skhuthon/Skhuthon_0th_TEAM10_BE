@@ -42,8 +42,10 @@ public class ReviewService {
 
     }
 
-    public ReviewListResDto reviewFindAll() {
-        List<Review> reviews = reviewRepository.findAll();
+    public ReviewListResDto reviewFindAll(Principal principal) {
+        Long id = Long.parseLong(principal.getName());
+        List<Review> reviews = reviewRepository.findByUserId(id).orElseThrow();
+
         List<ReviewInfoResDto> reviewInfoResDtoList = reviews.stream()
                 .map(ReviewInfoResDto::from)
                 .toList();
