@@ -21,7 +21,6 @@
 <br>
 
 ### Repository
-> [팀 소개 페이지](https://www.notion.so/goormthonuniv/8-de887e0e155847a79835951e1f9f5976?pvs=4)
 <br>
 - FrontEnd : https://github.com/Sungpie/Skhuthon_0th_TEAM10_FE <br>
 - BackEnd : https://github.com/Skhuthon/Skhuthon_0th_TEAM10_BE
