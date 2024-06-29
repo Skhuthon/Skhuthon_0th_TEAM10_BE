@@ -9,6 +9,7 @@ import com.example.skhuthon_0th_team10.dto.ReviewSaveReqDto;
 import com.example.skhuthon_0th_team10.repository.CityRepository;
 import com.example.skhuthon_0th_team10.repository.ReviewRepository;
 import com.example.skhuthon_0th_team10.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +45,10 @@ public class ReviewService {
 
     public ReviewListResDto reviewFindAll(Principal principal) {
         Long id = Long.parseLong(principal.getName());
-        List<Review> reviews = reviewRepository.findByUserId(id).orElseThrow();
+        List<Review> reviews = reviewRepository.findByUserId(id)
+                .orElseThrow(()
+                        -> new EntityNotFoundException("review", new Exception("userId로 review를 찾을 수 없습니다.")));
+        ;
 
         List<ReviewInfoResDto> reviewInfoResDtoList = reviews.stream()
                 .map(ReviewInfoResDto::from)
@@ -54,7 +58,9 @@ public class ReviewService {
 
     public List<ReviewInfoResDto> findReviewList(Long cityId) {
         List<Review> reviews = reviewRepository.findByCityId(cityId)
-                .orElseThrow();
+                .orElseThrow(()
+                        -> new EntityNotFoundException("review", new Exception("cityId로 review를 찾을 수 없습니다.")));
+
 
         List<ReviewInfoResDto> reviewInfoResDtoList = new ArrayList<>();
 
