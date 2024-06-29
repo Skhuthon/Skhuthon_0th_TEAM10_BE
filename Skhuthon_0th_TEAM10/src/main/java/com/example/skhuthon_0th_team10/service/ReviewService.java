@@ -37,13 +37,7 @@ public class ReviewService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id =" + id));
 
-        Review review = Review.builder()
-                .placeName1(reviewSaveReqDto.placeName1())
-                .placeInfo1(reviewSaveReqDto.placeInfo1())
-                .placeImage1(image)
-                .user(user)
-                .city(city)
-                .build();
+        Review review = reviewSaveReqDto.toEntity(user, city, image);
         reviewRepository.save(review);
 
     }
@@ -63,12 +57,7 @@ public class ReviewService {
         List<ReviewInfoResDto> reviewInfoResDtoList = new ArrayList<>();
 
         for (Review review : reviews) {
-            ReviewInfoResDto reviewInfoResDto = new ReviewInfoResDto(
-                    review.getId(),
-                    review.getPlaceName1(),
-                    review.getPlaceInfo1(),
-                    review.getPlaceImage1()
-            );
+            ReviewInfoResDto reviewInfoResDto = ReviewInfoResDto.from(review);
 
             reviewInfoResDtoList.add(reviewInfoResDto);
         }
