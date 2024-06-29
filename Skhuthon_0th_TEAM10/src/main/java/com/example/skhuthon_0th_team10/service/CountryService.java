@@ -18,16 +18,7 @@ public class CountryService {
     public CountryResDto getCountryInfo(Long countryId) {
         Country country = countryRepository.findById(countryId).orElseThrow();
 
-        CountryResDto countryResDto =
-                CountryResDto.builder()
-                        .name(country.getName())
-                        .character(country.getCharacter())
-                        .transportation(country.getTransportation())
-                        .number(country.getNumber())
-                        .accident(country.getAccident())
-                        .culture(country.getCulture())
-                        .countryImage(country.getCountryImage())
-                        .build();
+        CountryResDto countryResDto = CountryResDto.from(country);
 
         return countryResDto;
     }
