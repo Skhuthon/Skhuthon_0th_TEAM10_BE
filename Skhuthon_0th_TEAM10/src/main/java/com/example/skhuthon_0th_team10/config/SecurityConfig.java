@@ -45,22 +45,5 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-    // 토큰을 모든 서비스에 보내주니까, 토큰으로 파싱해서 원하는 컬럼값 가져오기.  Principal은 토큰 안의 정보를 가져올 때?
-//    @Bean
-//    public CorsConfigurationSource configurationSource() { // cors 설정 메서드
-//        CorsConfiguration configuration = new CorsConfiguration();
-//
-//        configuration.setAllowedOriginPatterns(List.of("*"));
-//        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-//        configuration.setAllowedHeaders(List.of("*"));
-//        configuration.setExposedHeaders(List.of("Access-Control-Allow-Credentials", "Authorization", "Set-Cookie"));
-//        configuration.setAllowCredentials(true);
-//        configuration.setMaxAge(3600L);
-//
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", configuration);
-//
-//        return source;
-//    }
 
 }
