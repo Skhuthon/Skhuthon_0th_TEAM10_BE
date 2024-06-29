@@ -5,6 +5,11 @@ import com.example.skhuthon_0th_team10.dto.ReviewInfoResDto;
 import com.example.skhuthon_0th_team10.dto.ReviewListResDto;
 import com.example.skhuthon_0th_team10.dto.ReviewSaveReqDto;
 import com.example.skhuthon_0th_team10.service.ReviewService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,17 +28,38 @@ import java.util.List;
 public class ReviewController {
     private final ReviewService reviewService;
 
+    @Operation(summary = "리뷰 리스트 조회", description = "리뷰 리스트를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "응답 생성을 성공했습니다"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다"),
+            @ApiResponse(responseCode = "401", description = "헤더 없음 or 토큰 불일치",
+                    content = @Content(schema = @Schema(example = "INVALID_HEADER or INVALID_TOKEN")))
+    })
     @GetMapping()
     public ResponseEntity<ReviewListResDto> reviewFindAll() {
         ReviewListResDto reviewListResDto = reviewService.reviewFindAll();
         return new ResponseEntity<>(reviewListResDto, HttpStatus.OK);
     }
 
+    @Operation(summary = "해당 도시를 주제로 작성한 리뷰 조회", description = "해당 도시를 주제로 작성한 리뷰를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "응답 생성을 성공했습니다"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다"),
+            @ApiResponse(responseCode = "401", description = "헤더 없음 or 토큰 불일치",
+                    content = @Content(schema = @Schema(example = "INVALID_HEADER or INVALID_TOKEN")))
+    })
     @GetMapping("/{cityId}")
     public ResponseEntity<List<ReviewInfoResDto>> reviewFindOne(@PathVariable Long cityId) {
         return new ResponseEntity<>(reviewService.findReviewList(cityId), HttpStatus.OK);
     }
 
+    @Operation(summary = "리뷰 작성", description = "리뷰를 작성합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "응답 생성을 성공했습니다"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다"),
+            @ApiResponse(responseCode = "401", description = "헤더 없음 or 토큰 불일치",
+                    content = @Content(schema = @Schema(example = "INVALID_HEADER or INVALID_TOKEN")))
+    })
     @ResponseBody
     @PostMapping(value = "/{cityId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> reviewSave(@RequestPart("review") ReviewSaveReqDto reviewSaveReqDto,
