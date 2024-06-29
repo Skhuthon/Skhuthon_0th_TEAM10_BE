@@ -29,11 +29,7 @@ public class CountryService {
         List<CountryListResDto> countryListResDtos = new ArrayList<>();
 
         for (Country country : countries) {
-            CountryListResDto countryListResDto = CountryListResDto.builder()
-                    .countryId(country.getId())
-                    .name(country.getName())
-                    .countryImage(country.getCountryImage())
-                    .build();
+            CountryListResDto countryListResDto = CountryListResDto.from(country);
 
             countryListResDtos.add(countryListResDto);
         }
