@@ -23,12 +23,7 @@ public class CityService {
         List<CityListResDto> cityListResDtos = new ArrayList<>();
 
         for (City city : cities) {
-            CityListResDto cityListResDto = CityListResDto.builder()
-                    .cityId(city.getId())
-                    .name(city.getName())
-                    .cityImage(city.getCityImage())
-                    .discription(city.getDiscription())
-                    .build();
+            CityListResDto cityListResDto = CityListResDto.from(city);
 
             cityListResDtos.add(cityListResDto);
         }
