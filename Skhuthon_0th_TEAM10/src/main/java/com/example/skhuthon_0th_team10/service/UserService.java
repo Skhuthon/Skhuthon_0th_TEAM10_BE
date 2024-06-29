@@ -21,6 +21,6 @@ public class UserService {
                 .orElseThrow(()
                         -> new EntityNotFoundException("user", new Exception("user를 찾을 수 없습니다.")));
 
-        return  UserResDto.of(user);
+        return  UserResDto.from(user);
     }
 }

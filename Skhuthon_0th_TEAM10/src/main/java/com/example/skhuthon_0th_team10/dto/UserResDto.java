@@ -12,7 +12,7 @@ public class UserResDto {
     private String pictureUrl;
 
 
-    public static UserResDto of(User user) {
+    public static UserResDto from(User user) {
         return UserResDto.builder()
                 .name(user.getName())
                 .email(user.getEmail())

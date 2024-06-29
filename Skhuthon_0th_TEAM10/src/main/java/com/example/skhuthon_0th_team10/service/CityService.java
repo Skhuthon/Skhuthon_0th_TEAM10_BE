@@ -16,7 +16,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CityService {
     private final CityRepository cityRepository;
-    private final CountryRepository countryRepository;
 
     public List<CityListResDto> getCityList(Long countryId) {
         List<City> cities = cityRepository.findByCountryId(countryId);
