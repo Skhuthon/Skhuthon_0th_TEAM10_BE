@@ -28,7 +28,7 @@ import java.util.List;
 public class ReviewController {
     private final ReviewService reviewService;
 
-    @Operation(summary = "리뷰 리스트 조회", description = "리뷰 리스트를 조회합니다.")
+    @Operation(summary = "로그인한 사람이 작성한 리뷰 리스트 조회", description = "로그인한 사람이 작성한 리뷰 리스트를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "응답 생성을 성공했습니다"),
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다"),
@@ -36,8 +36,8 @@ public class ReviewController {
                     content = @Content(schema = @Schema(example = "INVALID_HEADER or INVALID_TOKEN")))
     })
     @GetMapping()
-    public ResponseEntity<ReviewListResDto> reviewFindAll() {
-        ReviewListResDto reviewListResDto = reviewService.reviewFindAll();
+    public ResponseEntity<ReviewListResDto> reviewFindAll(Principal principal) {
+        ReviewListResDto reviewListResDto = reviewService.reviewFindAll(principal);
         return new ResponseEntity<>(reviewListResDto, HttpStatus.OK);
     }
 

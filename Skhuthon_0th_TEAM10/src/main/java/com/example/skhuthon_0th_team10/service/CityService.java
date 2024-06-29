@@ -18,7 +18,10 @@ public class CityService {
     private final CityRepository cityRepository;
 
     public List<CityListResDto> getCityList(Long countryId) {
-        List<City> cities = cityRepository.findByCountryId(countryId);
+        List<City> cities = cityRepository.findByCountryId(countryId)
+                .orElseThrow(()
+                        -> new EntityNotFoundException("city", new Exception("countryId로 city를 찾을 수 없습니다.")));
+        ;
 
         List<CityListResDto> cityListResDtos = new ArrayList<>();
 

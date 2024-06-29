@@ -4,6 +4,7 @@ import com.example.skhuthon_0th_team10.domain.Country;
 import com.example.skhuthon_0th_team10.dto.CountryListResDto;
 import com.example.skhuthon_0th_team10.dto.CountryResDto;
 import com.example.skhuthon_0th_team10.repository.CountryRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,10 @@ public class CountryService {
     private final CountryRepository countryRepository;
 
     public CountryResDto getCountryInfo(Long countryId) {
-        Country country = countryRepository.findById(countryId).orElseThrow();
+        Country country = countryRepository.findById(countryId)
+                .orElseThrow(()
+                        -> new EntityNotFoundException("country", new Exception("country를 찾을 수 없습니다.")));
+        ;
 
         CountryResDto countryResDto = CountryResDto.from(country);
 
