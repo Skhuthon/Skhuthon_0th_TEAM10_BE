@@ -36,12 +36,7 @@ public class CityService {
                 .orElseThrow(()
                 -> new EntityNotFoundException("city", new Exception("city를 찾을 수 없습니다.")));
 
-        CityResDto cityResDto = CityResDto.builder()
-                .name(city.getName())
-                .info(city.getInfo())
-                .recommendation(city.getRecommendation())
-                .cityImage(city.getCityImage())
-                .build();
+        CityResDto cityResDto = CityResDto.from(city);
 
         return cityResDto;
     }
