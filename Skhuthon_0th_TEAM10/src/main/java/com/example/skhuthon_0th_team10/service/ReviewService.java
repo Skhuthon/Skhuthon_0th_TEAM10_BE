@@ -64,4 +64,11 @@ public class ReviewService {
         return reviewInfoResDtoList;
     }
 
+    @Transactional
+    public void deleteReview(Long reviewId) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow( () -> new IllegalArgumentException("해당 리뷰가 없습니다. id = " + reviewId));
+
+        reviewRepository.delete(review);
+    }
 }
